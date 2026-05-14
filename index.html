@@ -21,7 +21,6 @@
             background-color: var(--cream);
             color: var(--navy);
             scroll-behavior: smooth;
-            overflow-x: hidden;
         }
 
         /* --- NAVIGATION --- */
@@ -31,7 +30,7 @@
             width: 100%;
             background-color: var(--white);
             padding: 15px 0;
-            display: none; /* Hidden until welcome screen is dismissed */
+            display: none; 
             justify-content: space-around;
             align-items: center;
             border-bottom: 3px dashed var(--pink);
@@ -72,7 +71,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- WELCOME SCREEN --- */
+        /* --- WELCOME SCREEN (No more egg!) --- */
         #welcome-screen {
             position: fixed;
             top: 0;
@@ -87,57 +86,60 @@
             transition: opacity 0.8s ease, visibility 0.8s;
         }
 
-        .welcome-circle {
+        .welcome-content {
             text-align: center;
-            border: 4px dashed var(--navy);
-            padding: 80px 40px;
-            border-radius: 50%;
-            background: var(--white);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-            max-width: 450px;
+            padding: 40px;
+            border-top: 5px solid var(--pink);
+            border-bottom: 5px solid var(--pink);
         }
 
-        .welcome-circle h1 {
+        .welcome-content h1 {
             font-family: 'Pacifico', cursive;
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin: 0;
             color: var(--pink);
-            transform: rotate(-5deg);
+        }
+
+        .welcome-content p {
+            font-size: 1.5rem;
+            margin: 10px 0 30px 0;
+            font-weight: 400;
         }
 
         .enter-btn {
             background-color: var(--pink);
             color: var(--white);
-            padding: 15px 40px;
+            padding: 15px 50px;
             border: none;
-            border-radius: 50px;
+            border-radius: 10px;
             font-size: 1.3rem;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 20px;
             transition: 0.3s;
         }
 
-        .enter-btn:hover { background-color: var(--navy); transform: scale(1.05); }
+        .enter-btn:hover { background-color: var(--navy); letter-spacing: 2px; }
 
-        /* --- GALLERY GRID --- */
-        .gallery-grid {
+        /* --- PORTFOLIO GRID (4x4) --- */
+        .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
-        .gallery-item {
-            height: 300px;
+        .portfolio-item {
+            aspect-ratio: 1 / 1;
             background: var(--white);
-            border-radius: 20px;
-            border: 2px solid var(--pink);
-            overflow: hidden;
+            border-radius: 15px;
+            border: 2px solid var(--soft-pink);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            transition: 0.3s;
         }
+
+        .portfolio-item:hover { border-color: var(--pink); transform: scale(1.02); }
 
         /* --- SHOP SECTIONS --- */
         .shop-section { margin-bottom: 60px; }
@@ -150,27 +152,24 @@
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
             margin-top: 20px;
         }
 
         .product-card {
             background: var(--white);
-            border: 2px dashed var(--navy);
-            border-radius: 30px;
+            border-radius: 20px;
             padding: 20px;
             text-align: center;
-            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-
-        .product-card:hover { transform: translateY(-5px); border-color: var(--pink); }
 
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 180px;
             background: var(--soft-pink);
-            border-radius: 20px;
+            border-radius: 15px;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -182,32 +181,28 @@
             background-color: var(--navy);
             color: var(--white);
             border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 10px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
             font-weight: 700;
-            transition: 0.3s;
         }
 
-        .buy-btn:hover { background-color: var(--pink); }
-
-        /* --- FORMS --- */
-        .custom-form {
+        /* --- FORMS & INFO BAR --- */
+        .info-bar {
             background: var(--white);
-            padding: 30px;
-            border-radius: 30px;
-            border: 2px dashed var(--navy);
-            max-width: 600px;
-            margin: 0 auto;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid var(--pink);
         }
 
         input, textarea, select {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             font-family: 'Quicksand', sans-serif;
             box-sizing: border-box;
         }
@@ -216,112 +211,112 @@
         .cart-item {
             background: var(--white);
             padding: 15px;
-            border-radius: 15px;
+            border-radius: 10px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-left: 5px solid var(--pink);
         }
 
         .total-box {
             text-align: right;
             font-size: 1.5rem;
             font-weight: 700;
-            margin-top: 20px;
+            margin: 20px 0;
+            color: var(--pink);
         }
 
-        /* --- SPLASH PAGE --- */
-        .splash-content {
-            text-align: center;
-            padding: 100px 20px;
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            .welcome-content h1 { font-size: 2.5rem; }
         }
-        .splash-content h1 { font-family: 'Pacifico', cursive; color: var(--pink); font-size: 4rem; }
     </style>
 </head>
 <body>
 
     <!-- WELCOME SCREEN -->
     <div id="welcome-screen">
-        <div class="welcome-circle">
-            <h1>Stitch-it <br> with Tomi</h1>
-            <p>Spun with Love, Hooked with Style.</p>
-            <button class="enter-btn" onclick="showPage('gallery')">Let's Shop! ✨</button>
+        <div class="welcome-content">
+            <h1>Stitch-it with Tomi</h1>
+            <p>Handmade with heart.</p>
+            <button class="enter-btn" onclick="showPage('home')">Enter Shop ✨</button>
         </div>
     </div>
 
     <!-- HEADER -->
     <header id="main-header">
-        <p class="logo-text" onclick="showPage('gallery')">Stitch-it with Tomi</p>
+        <p class="logo-text" onclick="showPage('home')">Stitch-it with Tomi</p>
         <nav>
-            <a onclick="showPage('gallery')">Gallery</a>
+            <a onclick="showPage('home')">Home</a>
             <a onclick="showPage('shop')">Shop</a>
             <a onclick="showPage('cart')">Cart (<span id="cart-count">0</span>)</a>
         </nav>
     </header>
 
-    <!-- GALLERY PAGE -->
-    <main id="gallery" class="page">
-        <h2 style="font-family: 'Pacifico'; color: var(--pink); font-size: 2.5rem; text-align: center;">Previous Projects</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">📸 Project 1</div>
-            <div class="gallery-item">📸 Project 2</div>
-            <div class="gallery-item">📸 Project 3</div>
-            <div class="gallery-item">📸 Project 4</div>
-            <div class="gallery-item">📸 Project 5</div>
-            <div class="gallery-item">📸 Project 6</div>
+    <!-- HOME/PORTFOLIO PAGE -->
+    <main id="home" class="page">
+        <h2 style="font-family: 'Pacifico'; color: var(--pink); font-size: 2.5rem; text-align: center;">Portfolio</h2>
+        <div class="portfolio-grid">
+            <!-- 16 Items for a 4x4 feel -->
+            <div class="portfolio-item">📸 Project 1</div>
+            <div class="portfolio-item">📸 Project 2</div>
+            <div class="portfolio-item">📸 Project 3</div>
+            <div class="portfolio-item">📸 Project 4</div>
+            <div class="portfolio-item">📸 Project 5</div>
+            <div class="portfolio-item">📸 Project 6</div>
+            <div class="portfolio-item">📸 Project 7</div>
+            <div class="portfolio-item">📸 Project 8</div>
+            <div class="portfolio-item">📸 Project 9</div>
+            <div class="portfolio-item">📸 Project 10</div>
+            <div class="portfolio-item">📸 Project 11</div>
+            <div class="portfolio-item) ">📸 Project 12</div>
+            <div class="portfolio-item">📸 Project 13</div>
+            <div class="portfolio-item">📸 Project 14</div>
+            <div class="portfolio-item">📸 Project 15</div>
+            <div class="portfolio-item">📸 Project 16</div>
         </div>
     </main>
 
     <!-- SHOP PAGE -->
     <main id="shop" class="page">
-        <!-- Keychains -->
         <section class="shop-section">
-            <h2>Keychains</h2>
+            <h2>Our Collection</h2>
             <div class="product-grid">
                 <div class="product-card">
                     <div class="product-image">🔑</div>
-                    <h3>Mini Bee Keychain</h3>
-                    <p class="price">$10.00</p>
-                    <button class="buy-btn" onclick="addToCart('Mini Bee Keychain', 10)">Add to Cart</button>
+                    <h3>Keychain</h3>
+                    <p>$10.00</p>
+                    <button class="buy-btn" onclick="addToCart('Keychain', 10)">Add to Cart</button>
                 </div>
-            </div>
-        </section>
-
-        <!-- Bags -->
-        <section class="shop-section">
-            <h2>Bags & Tops</h2>
-            <div class="product-grid">
                 <div class="product-card">
                     <div class="product-image">🎒</div>
-                    <h3>Market Tote</h3>
-                    <p class="price">$45.00</p>
-                    <button class="buy-btn" onclick="addToCart('Market Tote', 45)">Add to Cart</button>
+                    <h3>Crochet Bag</h3>
+                    <p>$40.00</p>
+                    <button class="buy-btn" onclick="addToCart('Crochet Bag', 40)">Add to Cart</button>
                 </div>
                 <div class="product-card">
                     <div class="product-image">👚</div>
-                    <h3>Summer Bralette</h3>
-                    <p class="price">$35.00</p>
-                    <button class="buy-btn" onclick="addToCart('Summer Bralette', 35)">Add to Cart</button>
+                    <h3>Crop Top</h3>
+                    <p>$35.00</p>
+                    <button class="buy-btn" onclick="addToCart('Crop Top', 35)">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🌸</div>
+                    <h3>Flower Bouquet</h3>
+                    <p>$25.00</p>
+                    <button class="buy-btn" onclick="addToCart('Flower Bouquet', 25)">Add to Cart</button>
                 </div>
             </div>
         </section>
 
-        <!-- Custom Orders -->
         <section class="shop-section">
-            <h2>Custom Orders</h2>
-            <div class="custom-form">
-                <p>Have a specific vision? Tell me about it!</p>
+            <h2>Custom Order</h2>
+            <div class="info-bar" style="border: 2px dashed var(--navy);">
                 <form id="customForm" onsubmit="sendCustomOrder(event)">
-                    <input type="text" id="custName" placeholder="Your Name" required>
-                    <select id="custType">
-                        <option value="Keychain">Keychain</option>
-                        <option value="Bag">Bag</option>
-                        <option value="Clothing">Clothing</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <textarea id="custDetails" rows="4" placeholder="Describe colors, size, and design details..." required></textarea>
-                    <button type="submit" class="buy-btn" style="background: var(--pink);">Send Custom Request</button>
+                    <input type="text" id="custNameInput" placeholder="Your Name" required>
+                    <input type="email" id="custEmailInput" placeholder="Your Email" required>
+                    <textarea id="custDetails" rows="4" placeholder="What can I make for you? (Colors, size, etc.)" required></textarea>
+                    <button type="submit" class="enter-btn" style="width: 100%; margin-top:10px;">Send Custom Request</button>
                 </form>
             </div>
         </section>
@@ -329,45 +324,47 @@
 
     <!-- CART PAGE -->
     <main id="cart" class="page">
-        <h2 style="font-family: 'Pacifico'; color: var(--pink);">Your Cart</h2>
-        <div id="cart-items-container">
-            <!-- Items appear here -->
+        <h2 style="font-family: 'Pacifico'; color: var(--pink);">Your Order</h2>
+        
+        <div class="info-bar">
+            <h3 style="margin-top:0;">Customer Info</h3>
+            <input type="text" id="orderName" placeholder="Full Name" required>
+            <input type="text" id="orderPhone" placeholder="Phone Number" required>
         </div>
+
+        <div id="cart-items-container"></div>
         <div class="total-box">Total: $<span id="cart-total">0</span></div>
-        <button class="enter-btn" style="width: 100%; margin-top: 30px;" onclick="bookOrder()">Book Order via Email</button>
+        <button class="enter-btn" style="width: 100%;" onclick="bookOrder()">Book Order via Email</button>
     </main>
 
     <!-- THANK YOU SPLASH -->
     <main id="thank-you" class="page">
-        <div class="splash-content">
-            <h1>Thank You!</h1>
-            <p>Your order request has been prepared. Please send the generated email to confirm!</p>
-            <button class="enter-btn" onclick="showPage('gallery')">Back to Home</button>
+        <div style="text-align: center; padding: 100px 0;">
+            <h1 style="font-family: 'Pacifico'; color: var(--pink); font-size: 3rem;">Thank You!</h1>
+            <p>I've prepared your order email. Please click "Send" in your email app to finish booking!</p>
+            <button class="enter-btn" onclick="showPage('home')">Return to Home</button>
         </div>
     </main>
 
     <script>
         let cart = [];
-        const myEmail = "your-email@example.com"; // CHANGE THIS TO YOUR EMAIL
+        const shopEmail = "stitchittomi@gmail.com";
 
         function showPage(pageId) {
-            // Hide welcome screen
             document.getElementById('welcome-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('welcome-screen').style.visibility = 'hidden';
                 document.getElementById('main-header').style.display = 'flex';
                 
-                // Switch pages
                 document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
                 document.getElementById(pageId).style.display = 'block';
                 window.scrollTo(0,0);
-            }, 500);
+            }, 400);
         }
 
         function addToCart(name, price) {
             cart.push({name, price});
             updateCartUI();
-            alert(name + " added to cart!");
         }
 
         function updateCartUI() {
@@ -383,7 +380,7 @@
                 container.innerHTML += `
                     <div class="cart-item">
                         <span>${item.name}</span>
-                        <span>$${item.price} <button onclick="removeItem(${index})" style="background:none; border:none; color:red; cursor:pointer; margin-left:10px;">X</button></span>
+                        <span>$${item.price} <button onclick="removeItem(${index})" style="color:red; border:none; background:none; cursor:pointer;">X</button></span>
                     </div>
                 `;
             });
@@ -396,15 +393,19 @@
         }
 
         function bookOrder() {
-            if(cart.length === 0) return alert("Cart is empty!");
-            
-            let itemDetails = cart.map(i => `- ${i.name} ($${i.price})`).join('%0D%0A');
+            const name = document.getElementById('orderName').value;
+            const phone = document.getElementById('orderPhone').value;
+
+            if(!name || !phone) return alert("Please fill in your name and phone number!");
+            if(cart.length === 0) return alert("Your cart is empty!");
+
+            let itemsList = cart.map(i => `- ${i.name} ($${i.price})`).join('%0D%0A');
             let total = document.getElementById('cart-total').innerText;
             
-            let subject = "New Order - Stitch-it with Tomi";
-            let body = `Hello Tomi! I would like to book the following items:%0D%0A%0D%0A${itemDetails}%0D%0A%0D%0ATotal: $${total}`;
+            let subject = `New Order from ${name}`;
+            let body = `Customer Info:%0D%0AName: ${name}%0D%0APhone: ${phone}%0D%0A%0D%0AOrder Items:%0D%0A${itemsList}%0D%0A%0D%0ATotal: $${total}`;
             
-            window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:${shopEmail}?subject=${encodeURIComponent(subject)}&body=${body}`;
             cart = [];
             updateCartUI();
             showPage('thank-you');
@@ -412,14 +413,14 @@
 
         function sendCustomOrder(e) {
             e.preventDefault();
-            let name = document.getElementById('custName').value;
-            let type = document.getElementById('custType').value;
-            let details = document.getElementById('custDetails').value;
+            const name = document.getElementById('custNameInput').value;
+            const email = document.getElementById('custEmailInput').value;
+            const details = document.getElementById('custDetails').value;
             
-            let subject = `Custom Order Request from ${name}`;
-            let body = `Type: ${type}%0D%0ADetails: ${details}`;
+            let subject = `CUSTOM ORDER REQUEST: ${name}`;
+            let body = `Customer: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0ADetails:%0D%0A${details}`;
             
-            window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:${shopEmail}?subject=${encodeURIComponent(subject)}&body=${body}`;
             showPage('thank-you');
         }
     </script>
