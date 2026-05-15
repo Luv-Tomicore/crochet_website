@@ -478,15 +478,15 @@
     </main>
 
     <script>
-        // Initialize EmailJS with your Public Key
-        // Replace "YOUR_PUBLIC_KEY" with the key from your EmailJS Account dashboard
+        // 1. Initialize with your Public Key
         (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); 
+            emailjs.init("V0WmqXFSWtO_Tqjj8"); 
         })();
 
         let cart = [];
         const shopEmail = "stitchittomi@gmail.com";
 
+        // 2. Navigation
         function showPage(pageId) {
             document.getElementById('welcome-screen').style.opacity = '0';
             setTimeout(() => {
@@ -498,6 +498,7 @@
             }, 400);
         }
 
+        // 3. Cart Logic
         function addToCart(name, price) {
             cart.push({name, price});
             updateCartUI();
@@ -519,103 +520,61 @@
 
         function removeItem(index) { cart.splice(index, 1); updateCartUI(); }
 
-        /* --- DIALOG MODAL MANAGEMENT --- */
+        // 4. Modal
         function openConfirmationModal() {
             const name = document.getElementById('orderName').value;
-            const email = document.getElementById('orderEmail').value;
-            const phone = document.getElementById('orderPhone').value;
+            if(!name || cart.length === 0) return alert("Please add items and enter your name!");
             
-            if(!name || !email || !phone || cart.length === 0) {
-                return alert("Please complete your information and add items to your cart!");
-            }
-
-            // Build item checkout breakdown list inside the confirmation modal
             let itemSummary = cart.map(i => `• ${i.name} ($${i.price})`).join('<br>');
             document.getElementById('modal-summary').innerHTML = `
                 <strong>Name:</strong> ${name}<br>
-                <strong>Email:</strong> ${email}<br>
-                <strong>Phone:</strong> ${phone}<br><br>
-                <strong>Items:</strong><br>${itemSummary}<br><br>
-                <strong>Total Bill:</strong> $${document.getElementById('cart-total').innerText}
+                <strong>Items:</strong><br>${itemSummary}<br>
+                <strong>Total:</strong> $${document.getElementById('cart-total').innerText}
             `;
             document.getElementById('confirmModal').style.display = 'flex';
         }
 
-        function closeConfirmationModal() {
-            document.getElementById('confirmModal').style.display = 'none';
-        }
+        function closeConfirmationModal() { document.getElementById('confirmModal').style.display = 'none'; }
 
-        /* --- SMTP ORDER DISPATCH (Using EmailJS) --- */
+        // 5. Send Order (Matches {{name}} and {{message}} in screenshot)
         function processFinalOrder() {
             closeConfirmationModal();
-            
             const name = document.getElementById('orderName').value;
-            const email = document.getElementById('orderEmail').value;
-            const phone = document.getElementById('orderPhone').value;
-            let itemsList = cart.map(i => `- ${i.name} ($${i.price})`).join('\n');
-            let grandTotal = document.getElementById('cart-total').innerText;
+            const details = cart.map(i => `- ${i.name} ($${i.price})`).join('\n');
 
-            var templateParams = {
-                to_email: shopEmail,
-                customer_name: name,
-                customer_email: email,
-                customer_phone: phone,
-                order_items: itemsList,
-                total_price: grandTotal
-            };
-
-            // NOTE: Replace "YOUR_SERVICE_ID" and "YOUR_TEMPLATE_ID" with your unique keys from EmailJS
-            emailjs.send('service_f2h5j5x', 'template_gomisn4', templateParams)
-                .then(function(response) {
-                   console.log('SUCCESS!', response.status, response.text);
-                   cart = []; 
-                   updateCartUI(); 
-                   showPage('thank-you');
-                }, function(error) {
-                   console.log('FAILED...', error);
-                   alert("SMTP Connection Error. The order could not be sent.");
-                });
+            emailjs.send('service_f2h5j5x', 'template_gomisn4', {
+                name: name,
+                message: `Order Items:\n${details}\n\nTotal: $${document.getElementById('cart-total').innerText}`
+            })
+            .then(() => {
+                cart = [];
+                updateCartUI();
+                showPage('thank-you');
+            }, (err) => alert("Error: " + JSON.stringify(err)));
         }
 
-        /* --- SMTP CUSTOM REQUEST SYSTEM WITH IMAGE PROCESSING --- */
+        // 6. Send Custom Order
         function sendCustomOrder(e) {
             e.preventDefault();
             const name = document.getElementById('custNameInput').value;
-            const email = document.getElementById('custEmailInput').value;
             const type = document.getElementById('custTypeSelect').value;
-            const details = document.getElementById('custDetails').value;
-            const fileInput = document.getElementById('custImage');
+            const desc = document.getElementById('custDetails').value;
+            const file = document.getElementById('custImage').files[0];
 
-            const sendData = (imageString) => {
-                var templateParams = {
-                    to_email: shopEmail,
-                    customer_name: name,
-                    customer_email: email,
-                    request_type: type,
-                    request_details: details,
-                    inspo_image: imageString // Passes the image data directly through SMTP
-                };
-
-                // NOTE: Replace with your service ID and custom request template ID from EmailJS
-                emailjs.send('service_f2h5j5x', 'template_qta3vap', templateParams)
-                    .then(function() {
-                       showPage('thank-you');
-                    }, function(error) {
-                       alert("Error sending request via SMTP.");
-                    });
+            const executeSend = (img = "No image") => {
+                emailjs.send('service_f2h5j5x', 'template_qta3vap', {
+                    name: name,
+                    message: `Type: ${type}\nDetails: ${desc}`,
+                    inspo_image: img
+                })
+                .then(() => showPage('thank-you'), (err) => alert("Error: " + JSON.stringify(err)));
             };
 
-            // If a file is uploaded, convert it into a Base64 text string format to send inside the email
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
+            if (file) {
                 const reader = new FileReader();
-                reader.onloadend = function() {
-                    sendData(reader.result);
-                };
+                reader.onloadend = () => executeSend(reader.result);
                 reader.readAsDataURL(file);
-            } else {
-                sendData("No image attached.");
-            }
+            } else { executeSend(); }
         }
     </script>
 </body>
