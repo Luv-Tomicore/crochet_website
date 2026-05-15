@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stitch-it with Tomi | Handmade Crochet</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Required Script for Secure SMTP/Email handling directly from the frontend -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <style>
         :root {
             --navy: #1a2a44;
@@ -71,7 +75,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- WELCOME SCREEN --- */
+        /* --- WELCOME SCREEN (Emoji Removed from Button) --- */
         #welcome-screen {
             position: fixed;
             top: 0;
@@ -116,7 +120,7 @@
 
         .enter-btn:hover { background-color: var(--navy); transform: scale(1.05); }
 
-        /* --- PORTFOLIO GRID (8 Items) --- */
+        /* --- PORTFOLIO GRID --- */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -136,41 +140,77 @@
             transition: 0.3s;
         }
 
-        /* --- SHOP SECTIONS --- */
+        /* --- SHOP SECTIONS (Centered Titles & Forced 4-Column Grid) --- */
         .shop-section { margin-bottom: 60px; }
+        
         .shop-section h2 {
             font-family: 'Pacifico', cursive;
             color: var(--pink);
             border-bottom: 2px dashed var(--navy);
             padding-bottom: 10px;
             margin-top: 40px;
+            text-align: center; /* Centered section titles */
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* Exactly 4 columns per row */
             gap: 25px;
             margin-top: 20px;
         }
 
+        /* --- PRODUCT CARD HOVER EFFECT --- */
         .product-card {
             background: var(--white);
             border-radius: 20px;
             padding: 20px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
         }
 
         .product-image {
             width: 100%;
-            height: 160px;
+            height: 100%;
             background: var(--soft-pink);
-            border-radius: 15px;
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
+        }
+
+        /* Hidden description overlay that shows on card hover */
+        .product-description-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 42, 68, 0.95);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .product-card:hover .product-description-overlay {
+            opacity: 1;
         }
 
         /* --- FORMS & INFO BAR --- */
@@ -211,17 +251,45 @@
             color: var(--pink);
         }
 
-        @media (max-width: 900px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+        /* --- CONFIRMATION MODAL POPUP --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 1024px) { 
+            .product-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); } 
+        }
+        @media (max-width: 600px) { 
+            .product-grid, .portfolio-grid { grid-template-columns: 1fr; } 
+        }
     </style>
 </head>
 <body>
 
-    <!-- WELCOME SCREEN -->
+    <!-- WELCOME SCREEN (Emoji Removed) -->
     <div id="welcome-screen">
         <div class="welcome-content">
             <h1>Stitch-it with Tomi</h1>
             <p>Handmade with heart.</p>
-            <button class="enter-btn" onclick="showPage('home')">Enter Shop ✨</button>
+            <button class="enter-btn" onclick="showPage('home')">Enter Shop</button>
         </div>
     </div>
 
@@ -235,7 +303,7 @@
         </nav>
     </header>
 
-    <!-- HOME PAGE (8 Photos) -->
+    <!-- HOME PAGE -->
     <main id="home" class="page">
         <h2 style="font-family: 'Pacifico'; color: var(--pink); font-size: 2.5rem; text-align: center;">Portfolio</h2>
         <div class="portfolio-grid">
@@ -250,63 +318,111 @@
         </div>
     </main>
 
-    <!-- SHOP PAGE (Organized Sections) -->
+    <!-- SHOP PAGE -->
     <main id="shop" class="page">
         
+        <!-- Keychains Section (Expanded to 4 items to demonstrate the grid layout) -->
         <section class="shop-section">
             <h2>Keychains</h2>
             <div class="product-grid">
+                <!-- Item 1 -->
                 <div class="product-card">
-                    <div class="product-image">🐝</div>
+                    <div class="product-image-container">
+                        <div class="product-image">🐝</div>
+                        <div class="product-description-overlay">A tiny, squishy plush bee perfect for your keys!</div>
+                    </div>
                     <h3>Mini Bee</h3>
                     <p>$10.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px;" onclick="addToCart('Bee Keychain', 10)">Add to Cart</button>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Bee Keychain', 10)">Add to Cart</button>
+                </div>
+                <!-- Item 2 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="product-image">🥑</div>
+                        <div class="product-description-overlay">Cute matching split avocado keychain pieces.</div>
+                    </div>
+                    <h3>Avocado Pair</h3>
+                    <p>$12.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Avocado Pair Keychain', 12)">Add to Cart</button>
+                </div>
+                <!-- Item 3 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="product-image">🐙</div>
+                        <div class="product-description-overlay">Mood octopus keychain! Reverse it to show expressions.</div>
+                    </div>
+                    <h3>Mini Octopus</h3>
+                    <p>$10.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Octopus Keychain', 10)">Add to Cart</button>
+                </div>
+                <!-- Item 4 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="product-image">🍓</div>
+                        <div class="product-description-overlay">Sweet strawberry charms knitted with cotton threads.</div>
+                    </div>
+                    <h3>Strawberry Charm</h3>
+                    <p>$8.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Strawberry Keychain', 8)">Add to Cart</button>
                 </div>
             </div>
         </section>
 
+        <!-- Bags Section -->
         <section class="shop-section">
             <h2>Bags</h2>
             <div class="product-grid">
                 <div class="product-card">
-                    <div class="product-image">🎒</div>
+                    <div class="product-image-container">
+                        <div class="product-image">🎒</div>
+                        <div class="product-description-overlay">Spacious boho-style vintage shoulder tote bag.</div>
+                    </div>
                     <h3>Tote Bag</h3>
                     <p>$45.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px;" onclick="addToCart('Tote Bag', 45)">Add to Cart</button>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Tote Bag', 45)">Add to Cart</button>
                 </div>
             </div>
         </section>
 
+        <!-- Clothing Section -->
         <section class="shop-section">
             <h2>Clothing</h2>
             <div class="product-grid">
                 <div class="product-card">
-                    <div class="product-image">👚</div>
+                    <div class="product-image-container">
+                        <div class="product-image">👚</div>
+                        <div class="product-description-overlay">Summer crop top made with custom breathable yarn.</div>
+                    </div>
                     <h3>Crop Top</h3>
                     <p>$35.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px;" onclick="addToCart('Crop Top', 35)">Add to Cart</button>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Crop Top', 35)">Add to Cart</button>
                 </div>
             </div>
         </section>
 
+        <!-- Accessories Section -->
         <section class="shop-section">
             <h2>Accessories & Flowers</h2>
             <div class="product-grid">
                 <div class="product-card">
-                    <div class="product-image">🌸</div>
+                    <div class="product-image-container">
+                        <div class="product-image">🌸</div>
+                        <div class="product-description-overlay">An everlasting crochet token rose wrapped beautifully.</div>
+                    </div>
                     <h3>Single Rose</h3>
                     <p>$15.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px;" onclick="addToCart('Single Rose', 15)">Add to Cart</button>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Single Rose', 15)">Add to Cart</button>
                 </div>
             </div>
         </section>
 
-        <!-- CUSTOM ORDER RESTORED -->
+        <!-- CUSTOM ORDER SECTION (Inspo Image Upload Added) -->
         <section class="shop-section">
             <h2>Custom Order</h2>
             <div class="info-bar" style="border: 2px dashed var(--navy);">
                 <form id="customForm" onsubmit="sendCustomOrder(event)">
                     <input type="text" id="custNameInput" placeholder="Your Name" required>
+                    <input type="email" id="custEmailInput" placeholder="Your Email Address" required>
                     <select id="custTypeSelect" required>
                         <option value="" disabled selected>Select Category</option>
                         <option value="Keychain">Keychain</option>
@@ -316,35 +432,58 @@
                         <option value="Other">Other</option>
                     </select>
                     <textarea id="custDetails" rows="4" placeholder="Colors, design ideas, or specific requests..." required></textarea>
-                    <button type="submit" class="enter-btn" style="width: 100%; margin-top:10px;">Send Custom Request</button>
+                    
+                    <!-- File input accepting only jpg, jpeg, png, gif -->
+                    <label style="font-weight: bold; display: block; margin-top: 10px;">Upload Inspiration Image (.jpg, .jpeg, .png, .gif):</label>
+                    <input type="file" id="custImage" accept=".jpg, .jpeg, .png, .gif">
+                    
+                    <button type="submit" class="enter-btn" style="width: 100%; margin-top:15px;">Send Custom Request</button>
                 </form>
             </div>
         </section>
     </main>
 
-    <!-- CART PAGE -->
+    <!-- CART PAGE (Email Field Added) -->
     <main id="cart" class="page">
         <h2 style="font-family: 'Pacifico'; color: var(--pink);">Your Order</h2>
         <div class="info-bar">
             <h3 style="margin-top:0;">Customer Details</h3>
             <input type="text" id="orderName" placeholder="Full Name" required>
+            <input type="email" id="orderEmail" placeholder="Email Address" required>
             <input type="text" id="orderPhone" placeholder="Phone Number" required>
         </div>
         <div id="cart-items-container"></div>
         <div class="total-box">Total: $<span id="cart-total">0</span></div>
-        <button class="enter-btn" style="width: 100%;" onclick="bookOrder()">Book Order via Email</button>
+        <button class="enter-btn" style="width: 100%;" onclick="openConfirmationModal()">Book Order via Email</button>
     </main>
+
+    <!-- CONFIRMATION MODAL POPUP -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2 style="font-family: 'Pacifico'; color: var(--pink);">Confirm Your Order</h2>
+            <p>Please review your details before confirming your order submission:</p>
+            <div id="modal-summary" style="text-align: left; margin: 15px 0; padding: 15px; background: var(--soft-pink); border-radius: 8px; line-height: 1.5;"></div>
+            <button class="enter-btn" style="padding: 10px 30px; margin-right: 10px;" onclick="processFinalOrder()">Yes, Confirm</button>
+            <button class="enter-btn" style="padding: 10px 30px; background-color: var(--navy);" onclick="closeConfirmationModal()">Cancel</button>
+        </div>
+    </div>
 
     <!-- THANK YOU SPLASH -->
     <main id="thank-you" class="page">
         <div style="text-align: center; padding: 80px 0;">
             <h1 style="font-family: 'Pacifico'; color: var(--pink); font-size: 3.5rem;">Thank You!</h1>
-            <p>Your request is ready to send. Please finish by sending the email that just opened!</p>
+            <p>Your details have been successfully processed and sent directly over secure SMTP email connection!</p>
             <button class="enter-btn" onclick="showPage('home')">Back to Home</button>
         </div>
     </main>
 
     <script>
+        // Initialize EmailJS with your Public Key
+        // Replace "YOUR_PUBLIC_KEY" with the key from your EmailJS Account dashboard
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); 
+        })();
+
         let cart = [];
         const shopEmail = "stitchittomi@gmail.com";
 
@@ -380,24 +519,103 @@
 
         function removeItem(index) { cart.splice(index, 1); updateCartUI(); }
 
-        function bookOrder() {
+        /* --- DIALOG MODAL MANAGEMENT --- */
+        function openConfirmationModal() {
             const name = document.getElementById('orderName').value;
+            const email = document.getElementById('orderEmail').value;
             const phone = document.getElementById('orderPhone').value;
-            if(!name || !phone || cart.length === 0) return alert("Please fill info and add items!");
-            let items = cart.map(i => `- ${i.name} ($${i.price})`).join('%0D%0A');
-            let body = `Name: ${name}%0D%0APhone: ${phone}%0D%0AItems:%0D%0A${items}%0D%0ATotal: $${document.getElementById('cart-total').innerText}`;
-            window.location.href = `mailto:${shopEmail}?subject=New Order: ${name}&body=${body}`;
-            cart = []; updateCartUI(); showPage('thank-you');
+            
+            if(!name || !email || !phone || cart.length === 0) {
+                return alert("Please complete your information and add items to your cart!");
+            }
+
+            // Build item checkout breakdown list inside the confirmation modal
+            let itemSummary = cart.map(i => `• ${i.name} ($${i.price})`).join('<br>');
+            document.getElementById('modal-summary').innerHTML = `
+                <strong>Name:</strong> ${name}<br>
+                <strong>Email:</strong> ${email}<br>
+                <strong>Phone:</strong> ${phone}<br><br>
+                <strong>Items:</strong><br>${itemSummary}<br><br>
+                <strong>Total Bill:</strong> $${document.getElementById('cart-total').innerText}
+            `;
+            document.getElementById('confirmModal').style.display = 'flex';
         }
 
+        function closeConfirmationModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        /* --- SMTP ORDER DISPATCH (Using EmailJS) --- */
+        function processFinalOrder() {
+            closeConfirmationModal();
+            
+            const name = document.getElementById('orderName').value;
+            const email = document.getElementById('orderEmail').value;
+            const phone = document.getElementById('orderPhone').value;
+            let itemsList = cart.map(i => `- ${i.name} ($${i.price})`).join('\n');
+            let grandTotal = document.getElementById('cart-total').innerText;
+
+            var templateParams = {
+                to_email: shopEmail,
+                customer_name: name,
+                customer_email: email,
+                customer_phone: phone,
+                order_items: itemsList,
+                total_price: grandTotal
+            };
+
+            // NOTE: Replace "YOUR_SERVICE_ID" and "YOUR_TEMPLATE_ID" with your unique keys from EmailJS
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                   console.log('SUCCESS!', response.status, response.text);
+                   cart = []; 
+                   updateCartUI(); 
+                   showPage('thank-you');
+                }, function(error) {
+                   console.log('FAILED...', error);
+                   alert("SMTP Connection Error. The order could not be sent.");
+                });
+        }
+
+        /* --- SMTP CUSTOM REQUEST SYSTEM WITH IMAGE PROCESSING --- */
         function sendCustomOrder(e) {
             e.preventDefault();
             const name = document.getElementById('custNameInput').value;
+            const email = document.getElementById('custEmailInput').value;
             const type = document.getElementById('custTypeSelect').value;
             const details = document.getElementById('custDetails').value;
-            let body = `Name: ${name}%0D%0AType: ${type}%0D%0ADetails: ${details}`;
-            window.location.href = `mailto:${shopEmail}?subject=Custom Request: ${type} by ${name}&body=${body}`;
-            showPage('thank-you');
+            const fileInput = document.getElementById('custImage');
+
+            const sendData = (imageString) => {
+                var templateParams = {
+                    to_email: shopEmail,
+                    customer_name: name,
+                    customer_email: email,
+                    request_type: type,
+                    request_details: details,
+                    inspo_image: imageString // Passes the image data directly through SMTP
+                };
+
+                // NOTE: Replace with your service ID and custom request template ID from EmailJS
+                emailjs.send('YOUR_SERVICE_ID', 'YOUR_CUSTOM_TEMPLATE_ID', templateParams)
+                    .then(function() {
+                       showPage('thank-you');
+                    }, function(error) {
+                       alert("Error sending request via SMTP.");
+                    });
+            };
+
+            // If a file is uploaded, convert it into a Base64 text string format to send inside the email
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    sendData(reader.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sendData("No image attached.");
+            }
         }
     </script>
 </body>
