@@ -477,8 +477,8 @@
         </div>
     </main>
 
-    <script>
-        // 1. Initialize with your Public Key
+   <script>
+        // 1. Initialize EmailJS with your Public Key
         (function() {
             emailjs.init("V0WmqXFSWtO_Tqjj8"); 
         })();
@@ -486,7 +486,7 @@
         let cart = [];
         const shopEmail = "stitchittomi@gmail.com";
 
-        // 2. Navigation
+        // 2. Navigation Logic
         function showPage(pageId) {
             document.getElementById('welcome-screen').style.opacity = '0';
             setTimeout(() => {
@@ -498,11 +498,11 @@
             }, 400);
         }
 
-        // 3. Cart Logic
+        // 3. Cart Functions
         function addToCart(name, price) {
             cart.push({name, price});
             updateCartUI();
-            alert(name + " added!");
+            alert(name + " added to cart!");
         }
 
         function updateCartUI() {
@@ -513,68 +513,103 @@
             let total = 0;
             cart.forEach((item, index) => {
                 total += item.price;
-                container.innerHTML += `<div class="cart-item"><span>${item.name}</span><span>$${item.price} <button onclick="removeItem(${index})" style="color:red; border:none; background:none; cursor:pointer; margin-left:10px;">Remove</button></span></div>`;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <span>$${item.price} 
+                            <button onclick="removeItem(${index})" style="color:red; border:none; background:none; cursor:pointer; margin-left:10px;">Remove</button>
+                        </span>
+                    </div>`;
             });
             totalEl.innerText = total;
         }
 
         function removeItem(index) { cart.splice(index, 1); updateCartUI(); }
 
-        // 4. Modal
+        // 4. Confirmation Modal
         function openConfirmationModal() {
             const name = document.getElementById('orderName').value;
-            if(!name || cart.length === 0) return alert("Please add items and enter your name!");
+            const email = document.getElementById('orderEmail').value;
+            const phone = document.getElementById('orderPhone').value;
             
+            if(!name || !email || !phone || cart.length === 0) {
+                return alert("Please fill in all details and add items to your cart!");
+            }
+
             let itemSummary = cart.map(i => `• ${i.name} ($${i.price})`).join('<br>');
             document.getElementById('modal-summary').innerHTML = `
                 <strong>Name:</strong> ${name}<br>
-                <strong>Items:</strong><br>${itemSummary}<br>
+                <strong>Email:</strong> ${email}<br>
+                <strong>Phone:</strong> ${phone}<br><br>
+                <strong>Items:</strong><br>${itemSummary}<br><br>
                 <strong>Total:</strong> $${document.getElementById('cart-total').innerText}
             `;
             document.getElementById('confirmModal').style.display = 'flex';
         }
 
-        function closeConfirmationModal() { document.getElementById('confirmModal').style.display = 'none'; }
-
-        // 5. Send Order (Matches {{name}} and {{message}} in screenshot)
-        function processFinalOrder() {
-            closeConfirmationModal();
-            const name = document.getElementById('orderName').value;
-            const details = cart.map(i => `- ${i.name} ($${i.price})`).join('\n');
-
-            emailjs.send('service_f2h5j5x', 'template_gomisn4', {
-                name: name,
-                message: `Order Items:\n${details}\n\nTotal: $${document.getElementById('cart-total').innerText}`
-            })
-            .then(() => {
-                cart = [];
-                updateCartUI();
-                showPage('thank-you');
-            }, (err) => alert("Error: " + JSON.stringify(err)));
+        function closeConfirmationModal() {
+            document.getElementById('confirmModal').style.display = 'none';
         }
 
-        // 6. Send Custom Order
-        function sendCustomOrder(e) {
-            e.preventDefault();
-            const name = document.getElementById('custNameInput').value;
-            const type = document.getElementById('custTypeSelect').value;
-            const desc = document.getElementById('custDetails').value;
-            const file = document.getElementById('custImage').files[0];
+        // 5. Process Standard Order (Matches your template tags: name, message, email)
+        function processFinalOrder() {
+            closeConfirmationModal();
+            
+            const uName = document.getElementById('orderName').value;
+            const uEmail = document.getElementById('orderEmail').value;
+            const uPhone = document.getElementById('orderPhone').value;
+            const itemsList = cart.map(i => `- ${i.name} ($${i.price})`).join('\n');
+            const total = document.getElementById('cart-total').innerText;
 
-            const executeSend = (img = "No image") => {
-                emailjs.send('service_f2h5j5x', 'template_qta3vap', {
-                    name: name,
-                    message: `Type: ${type}\nDetails: ${desc}`,
-                    inspo_image: img
-                })
-                .then(() => showPage('thank-you'), (err) => alert("Error: " + JSON.stringify(err)));
+            const templateParams = {
+                name: uName,
+                email: uEmail,
+                message: `Customer Phone: ${uPhone}\n\nOrder Details:\n${itemsList}\n\nGrand Total: $${total}`
             };
 
-            if (file) {
+            emailjs.send('service_f2h5j5x', 'template_gomisn4', templateParams)
+                .then(function() {
+                   cart = []; 
+                   updateCartUI(); 
+                   showPage('thank-you');
+                }, function(error) {
+                   console.log("Error:", error);
+                   alert("Order Error: Please check that 'Use Private Key' is UNCHECKED in your EmailJS Security settings.");
+                });
+        }
+
+        // 6. Process Custom Order
+        function sendCustomOrder(e) {
+            e.preventDefault();
+            const uName = document.getElementById('custNameInput').value;
+            const uEmail = document.getElementById('custEmailInput').value;
+            const type = document.getElementById('custTypeSelect').value;
+            const details = document.getElementById('custDetails').value;
+            const fileInput = document.getElementById('custImage');
+
+            const performSend = (base64Image) => {
+                const templateParams = {
+                    name: uName,
+                    email: uEmail,
+                    message: `Request Category: ${type}\n\nDescription: ${details}`,
+                    inspo_image: base64Image || "No image provided"
+                };
+
+                emailjs.send('service_f2h5j5x', 'template_qta3vap', templateParams)
+                    .then(function() {
+                       showPage('thank-you');
+                    }, function(error) {
+                       alert("Custom Request Error: " + JSON.stringify(error));
+                    });
+            };
+
+            if (fileInput.files.length > 0) {
                 const reader = new FileReader();
-                reader.onloadend = () => executeSend(reader.result);
-                reader.readAsDataURL(file);
-            } else { executeSend(); }
+                reader.onloadend = () => performSend(reader.result);
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                performSend(null);
+            }
         }
     </script>
 </body>
