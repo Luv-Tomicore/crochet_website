@@ -6,7 +6,6 @@
     <title>Stitch-it with Tomi | Handmade Crochet</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Required Script for Secure SMTP/Email handling directly from the frontend -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <style>
@@ -187,6 +186,32 @@
             align-items: center;
             justify-content: center;
             font-size: 2rem;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+        }
+
+        /* Styling for the secondary hover view */
+        .hover-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+
+        /* Card actions for items leveraging image hover */
+        .product-card:hover .product-image-swap {
+            opacity: 0;
+        }
+        .product-card:hover .hover-image {
+            opacity: 1;
         }
 
         /* Hidden description overlay that shows on card hover */
@@ -284,7 +309,6 @@
 </head>
 <body>
 
-    <!-- WELCOME SCREEN (Emoji Removed) -->
     <div id="welcome-screen">
         <div class="welcome-content">
             <h1>Stitch-it with Tomi</h1>
@@ -293,7 +317,6 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header id="main-header">
         <p class="logo-text" onclick="showPage('home')">Stitch-it with Tomi</p>
         <nav>
@@ -303,7 +326,6 @@
         </nav>
     </header>
 
-    <!-- HOME PAGE -->
     <main id="home" class="page">
         <h2 style="font-family: 'Pacifico'; color: var(--pink); font-size: 2.5rem; text-align: center;">Portfolio</h2>
         <div class="portfolio-grid">
@@ -318,57 +340,73 @@
         </div>
     </main>
 
-    <!-- SHOP PAGE -->
     <main id="shop" class="page">
         
-        <!-- Keychains Section (Expanded to 4 items to demonstrate the grid layout) -->
         <section class="shop-section">
-            <h2>Keychains</h2>
+            <h2>Keychains and Lanyards</h2>
             <div class="product-grid">
-                <!-- Item 1 -->
                 <div class="product-card">
                     <div class="product-image-container">
-                        <div class="product-image">🐝</div>
-                        <div class="product-description-overlay">A tiny, squishy plush bee perfect for your keys!</div>
+                        <img src="IMG_1791.jpg" alt="Watermelon View 1" class="product-image product-image-swap">
+                        <img src="IMG_1784.jpg" alt="Watermelon View 2" class="hover-image">
                     </div>
-                    <h3>Mini Bee</h3>
-                    <p>$10.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Bee Keychain', 10)">Add to Cart</button>
-                </div>
-                <!-- Item 2 -->
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <div class="product-image">🥑</div>
-                        <div class="product-description-overlay">Cute matching split avocado keychain pieces.</div>
-                    </div>
-                    <h3>Avocado Pair</h3>
-                    <p>$12.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Avocado Pair Keychain', 12)">Add to Cart</button>
-                </div>
-                <!-- Item 3 -->
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <div class="product-image">🐙</div>
-                        <div class="product-description-overlay">Mood octopus keychain! Reverse it to show expressions.</div>
-                    </div>
-                    <h3>Mini Octopus</h3>
-                    <p>$10.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Octopus Keychain', 10)">Add to Cart</button>
-                </div>
-                <!-- Item 4 -->
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <div class="product-image">🍓</div>
-                        <div class="product-description-overlay">Sweet strawberry charms knitted with cotton threads.</div>
-                    </div>
-                    <h3>Strawberry Charm</h3>
+                    <h3>Watermelon</h3>
                     <p>$8.00</p>
-                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Strawberry Keychain', 8)">Add to Cart</button>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Watermelon Keychain', 8)">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="IMG_1745.jpg" alt="Blue Buddy View 1" class="product-image product-image-swap">
+                        <img src="IMG_1695.jpg" alt="Blue Buddy View 2" class="hover-image">
+                    </div>
+                    <h3>Blue Buddy</h3>
+                    <p>$8.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Blue Buddy Keychain', 8)">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="IMG_1756.jpg" alt="Cherry Berry View 1" class="product-image product-image-swap">
+                        <img src="IMG_1755.jpg" alt="Cherry Berry View 2" class="hover-image">
+                    </div>
+                    <h3>Cherry Berry</h3>
+                    <p>$8.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Cherry Berry Lanyard', 8)">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="IMG_1762.jpg" alt="Spring Pals Pink View 1" class="product-image product-image-swap">
+                        <img src="IMG_1760.jpg" alt="Spring Pals Pink View 2" class="hover-image">
+                    </div>
+                    <h3>Spring Pals</h3>
+                    <p>$8.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Spring Pals (Pink Tulips)', 8)">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="IMG_1764.jpg" alt="Spring Pals Teal View 1" class="product-image product-image-swap">
+                        <img src="IMG_1763.jpg" alt="Spring Pals Teal View 2" class="hover-image">
+                    </div>
+                    <h3>Spring Pals</h3>
+                    <p>$8.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Spring Pals (Blue & Teal Tulips)', 8)">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="IMG_1730.jpg" alt="Spring Pals Purple View 1" class="product-image product-image-swap">
+                        <img src="IMG_1728.jpg" alt="Spring Pals Purple View 2" class="hover-image">
+                    </div>
+                    <h3>Spring Pals</h3>
+                    <p>$8.00</p>
+                    <button class="enter-btn" style="width: 100%; padding: 10px; font-size:1rem;" onclick="addToCart('Spring Pals (Blue & Purple Tulips)', 8)">Add to Cart</button>
                 </div>
             </div>
         </section>
 
-        <!-- Bags Section -->
         <section class="shop-section">
             <h2>Bags</h2>
             <div class="product-grid">
@@ -384,7 +422,6 @@
             </div>
         </section>
 
-        <!-- Clothing Section -->
         <section class="shop-section">
             <h2>Clothing</h2>
             <div class="product-grid">
@@ -400,7 +437,6 @@
             </div>
         </section>
 
-        <!-- Accessories Section -->
         <section class="shop-section">
             <h2>Accessories & Flowers</h2>
             <div class="product-grid">
@@ -416,7 +452,6 @@
             </div>
         </section>
 
-        <!-- CUSTOM ORDER SECTION (Inspo Image Upload Added) -->
         <section class="shop-section">
             <h2>Custom Order</h2>
             <div class="info-bar" style="border: 2px dashed var(--navy);">
@@ -433,7 +468,6 @@
                     </select>
                     <textarea id="custDetails" rows="4" placeholder="Colors, design ideas, or specific requests..." required></textarea>
                     
-                    <!-- File input accepting only jpg, jpeg, png, gif -->
                     <label style="font-weight: bold; display: block; margin-top: 10px;">Upload Inspiration Image (.jpg, .jpeg, .png, .gif):</label>
                     <input type="file" id="custImage" accept=".jpg, .jpeg, .png, .gif">
                     
@@ -443,7 +477,6 @@
         </section>
     </main>
 
-    <!-- CART PAGE (Email Field Added) -->
     <main id="cart" class="page">
         <h2 style="font-family: 'Pacifico'; color: var(--pink);">Your Order</h2>
         <div class="info-bar">
@@ -457,7 +490,6 @@
         <button class="enter-btn" style="width: 100%;" onclick="openConfirmationModal()">Book Order via Email</button>
     </main>
 
-    <!-- CONFIRMATION MODAL POPUP -->
     <div id="confirmModal" class="modal">
         <div class="modal-content">
             <h2 style="font-family: 'Pacifico'; color: var(--pink);">Confirm Your Order</h2>
@@ -468,7 +500,6 @@
         </div>
     </div>
 
-    <!-- THANK YOU SPLASH -->
     <main id="thank-you" class="page">
         <div style="text-align: center; padding: 80px 0;">
             <h1 style="font-family: 'Pacifico'; color: var(--pink); font-size: 3.5rem;">Thank You!</h1>
