@@ -74,7 +74,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- WELCOME SCREEN (Emoji Removed from Button) --- */
+        /* --- WELCOME SCREEN --- */
         #welcome-screen {
             position: fixed;
             top: 0;
@@ -115,6 +115,7 @@
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
+            font-family: 'Quicksand', sans-serif;
         }
 
         .enter-btn:hover { background-color: var(--navy); transform: scale(1.05); }
@@ -139,7 +140,7 @@
             transition: 0.3s;
         }
 
-        /* --- SHOP SECTIONS (Centered Titles & Forced 4-Column Grid) --- */
+        /* --- SHOP SECTIONS --- */
         .shop-section { margin-bottom: 60px; }
         
         .shop-section h2 {
@@ -148,12 +149,12 @@
             border-bottom: 2px dashed var(--navy);
             padding-bottom: 10px;
             margin-top: 40px;
-            text-align: center; /* Centered section titles */
+            text-align: center;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Exactly 4 columns per row */
+            grid-template-columns: repeat(4, 1fr);
             gap: 25px;
             margin-top: 20px;
         }
@@ -176,25 +177,32 @@
             margin-bottom: 15px;
             border-radius: 15px;
             overflow: hidden;
+            background: var(--soft-pink);
         }
 
+        /* Default layout images */
         .product-image {
             width: 100%;
             height: 100%;
-            background: var(--soft-pink);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
+        }
+
+        /* Showcase layout images */
+        .product-image-swap {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0;
             left: 0;
             transition: opacity 0.3s ease-in-out;
             opacity: 1;
+            z-index: 2;
         }
 
-        /* Styling for the secondary hover view */
         .hover-image {
             width: 100%;
             height: 100%;
@@ -204,9 +212,10 @@
             left: 0;
             transition: opacity 0.3s ease-in-out;
             opacity: 0;
+            z-index: 1;
         }
 
-        /* Card actions for items leveraging image hover */
+        /* Hover animations for double-view images */
         .product-card:hover .product-image-swap {
             opacity: 0;
         }
@@ -214,7 +223,7 @@
             opacity: 1;
         }
 
-        /* Hidden description overlay that shows on card hover */
+        /* Hidden description overlay that shows on card hover (Bags, Clothes, etc) */
         .product-description-overlay {
             position: absolute;
             top: 0;
@@ -232,10 +241,26 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             border-radius: 15px;
+            z-index: 3;
+            font-family: 'Quicksand', sans-serif;
         }
 
         .product-card:hover .product-description-overlay {
             opacity: 1;
+        }
+
+        .product-card h3 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            margin: 10px 0 5px;
+            color: var(--navy);
+        }
+
+        .product-card p {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            color: var(--pink);
+            margin: 0 0 15px;
         }
 
         /* --- FORMS & INFO BAR --- */
@@ -347,8 +372,8 @@
             <div class="product-grid">
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1791.jpg" alt="Watermelon View 1" class="product-image product-image-swap">
-                        <img src="IMG_1784.jpg" alt="Watermelon View 2" class="hover-image">
+                        <img src="IMG_1791.jpg" alt="Watermelon" class="product-image-swap">
+                        <img src="IMG_1784.jpg" alt="Watermelon Hover" class="hover-image">
                     </div>
                     <h3>Watermelon</h3>
                     <p>$8.00</p>
@@ -357,8 +382,8 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1745.jpg" alt="Blue Buddy View 1" class="product-image product-image-swap">
-                        <img src="IMG_1695.jpg" alt="Blue Buddy View 2" class="hover-image">
+                        <img src="IMG_1745.jpg" alt="Blue Buddy" class="product-image-swap">
+                        <img src="IMG_1695.jpg" alt="Blue Buddy Hover" class="hover-image">
                     </div>
                     <h3>Blue Buddy</h3>
                     <p>$8.00</p>
@@ -367,8 +392,8 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1756.jpg" alt="Cherry Berry View 1" class="product-image product-image-swap">
-                        <img src="IMG_1755.jpg" alt="Cherry Berry View 2" class="hover-image">
+                        <img src="IMG_1756.jpg" alt="Cherry Berry" class="product-image-swap">
+                        <img src="IMG_1755.jpg" alt="Cherry Berry Hover" class="hover-image">
                     </div>
                     <h3>Cherry Berry</h3>
                     <p>$8.00</p>
@@ -377,8 +402,8 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1762.jpg" alt="Spring Pals Pink View 1" class="product-image product-image-swap">
-                        <img src="IMG_1760.jpg" alt="Spring Pals Pink View 2" class="hover-image">
+                        <img src="IMG_1762.jpg" alt="Spring Pals Pink" class="product-image-swap">
+                        <img src="IMG_1760.jpg" alt="Spring Pals Pink Hover" class="hover-image">
                     </div>
                     <h3>Spring Pals</h3>
                     <p>$8.00</p>
@@ -387,8 +412,8 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1764.jpg" alt="Spring Pals Teal View 1" class="product-image product-image-swap">
-                        <img src="IMG_1763.jpg" alt="Spring Pals Teal View 2" class="hover-image">
+                        <img src="IMG_1764.jpg" alt="Spring Pals Teal" class="product-image-swap">
+                        <img src="IMG_1763.jpg" alt="Spring Pals Teal Hover" class="hover-image">
                     </div>
                     <h3>Spring Pals</h3>
                     <p>$8.00</p>
@@ -397,8 +422,8 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1730.jpg" alt="Spring Pals Purple View 1" class="product-image product-image-swap">
-                        <img src="IMG_1728.jpg" alt="Spring Pals Purple View 2" class="hover-image">
+                        <img src="IMG_1730.jpg" alt="Spring Pals Purple" class="product-image-swap">
+                        <img src="IMG_1728.jpg" alt="Spring Pals Purple Hover" class="hover-image">
                     </div>
                     <h3>Spring Pals</h3>
                     <p>$8.00</p>
@@ -578,11 +603,7 @@
             document.getElementById('confirmModal').style.display = 'flex';
         }
 
-        function closeConfirmationModal() {
-            document.getElementById('confirmModal').style.display = 'none';
-        }
-
-        // 5. Process Standard Order (Matches your template tags: name, message, email)
+        // 5. Process Standard Order
         function processFinalOrder() {
             closeConfirmationModal();
             
@@ -641,6 +662,10 @@
             } else {
                 performSend(null);
             }
+        }
+        
+        function closeConfirmationModal() {
+            document.getElementById('confirmModal').style.display = 'none';
         }
     </script>
 </body>
