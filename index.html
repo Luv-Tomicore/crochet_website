@@ -159,7 +159,7 @@
             margin-top: 20px;
         }
 
-        /* --- PRODUCT CARD HOVER EFFECT --- */
+        /* --- PRODUCT CARD FIXED HOVER --- */
         .product-card {
             background: var(--white);
             border-radius: 20px;
@@ -173,52 +173,38 @@
         .product-image-container {
             position: relative;
             width: 100%;
-            height: 160px;
+            height: 180px;
             margin-bottom: 15px;
             border-radius: 15px;
             overflow: hidden;
             background: var(--soft-pink);
         }
 
-        /* Default layout images */
-        .product-image {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-        }
-
-        /* Showcase layout images */
-        .product-image-swap {
+        .product-image-swap, .hover-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0;
             left: 0;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .product-image-swap {
             opacity: 1;
             z-index: 2;
         }
 
         .hover-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: opacity 0.3s ease-in-out;
             opacity: 0;
             z-index: 1;
         }
 
-        /* Hover animations for double-view images */
+        /* Fixed CSS state selectors for flawless hovering */
         .product-card:hover .product-image-swap {
             opacity: 0;
         }
+        
         .product-card:hover .hover-image {
             opacity: 1;
         }
@@ -370,10 +356,11 @@
         <section class="shop-section">
             <h2>Keychains and Lanyards</h2>
             <div class="product-grid">
+                
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1791.jpeg" alt="Watermelon" class="product-image-swap">
-                        <img src="IMG_1784.jpeg" alt="Watermelon Hover" class="hover-image">
+                        <img src="IMG_1789.jpeg" alt="Watermelon" class="product-image-swap">
+                        <img src="IMG_1788.jpeg" alt="Watermelon Hover" class="hover-image">
                     </div>
                     <h3>Watermelon</h3>
                     <p>$8.00</p>
@@ -382,8 +369,8 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1745.jpeg" alt="Blue Buddy" class="product-image-swap">
-                        <img src="IMG_1695.jpeg" alt="Blue Buddy Hover" class="hover-image">
+                        <img src="IMG_1747.jpeg" alt="Blue Buddy" class="product-image-swap">
+                        <img src="IMG_1746.jpeg" alt="Blue Buddy Hover" class="hover-image">
                     </div>
                     <h3>Blue Buddy</h3>
                     <p>$8.00</p>
@@ -392,8 +379,8 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1756.jpeg" alt="Cherry Berry" class="product-image-swap">
-                        <img src="IMG_1755.jpeg" alt="Cherry Berry Hover" class="hover-image">
+                        <img src="IMG_1754.jpeg" alt="Cherry Berry" class="product-image-swap">
+                        <img src="IMG_1754.jpeg" alt="Cherry Berry Hover" class="hover-image">
                     </div>
                     <h3>Cherry Berry</h3>
                     <p>$8.00</p>
@@ -403,7 +390,7 @@
                 <div class="product-card">
                     <div class="product-image-container">
                         <img src="IMG_1762.jpeg" alt="Spring Pals Pink" class="product-image-swap">
-                        <img src="IMG_1760.jpeg" alt="Spring Pals Pink Hover" class="hover-image">
+                        <img src="IMG_1761.jpeg" alt="Spring Pals Pink Hover" class="hover-image">
                     </div>
                     <h3>Spring Pals</h3>
                     <p>$8.00</p>
@@ -422,7 +409,7 @@
 
                 <div class="product-card">
                     <div class="product-image-container">
-                        <img src="IMG_1730.jpeg" alt="Spring Pals Purple" class="product-image-swap">
+                        <img src="IMG_1729.jpeg" alt="Spring Pals Purple" class="product-image-swap">
                         <img src="IMG_1728.jpeg" alt="Spring Pals Purple Hover" class="hover-image">
                     </div>
                     <h3>Spring Pals</h3>
@@ -626,7 +613,7 @@
                    showPage('thank-you');
                 }, function(error) {
                    console.log("Error:", error);
-                   alert("Order Error: Please check that 'Use Private Key' is UNCHECKED in your EmailJS Security settings.");
+                   alert("Order Error: Please check your configuration.");
                 });
         }
 
